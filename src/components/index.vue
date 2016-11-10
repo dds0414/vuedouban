@@ -1,27 +1,52 @@
 <template>
     <div>
-        <header-component/>
-        <div>this is template body</div>
-        <other-component/>
+        <div v-for="item in TagList" style="float: left;margin-right: 15px">
+            <span @click="getBookListWithTagId(item.id)">{{ item.tag_name }}</span>
+        </div>
+        <table style="clear:both;padding-top: 10px">
+            <tr v-for="item in BookList">
+                <td>{{ item.title }}</td>
+                <td>评分：{{ item.star }}&nbsp;</td>
+                <td>评论：({{ item.comment }})</td>
+            </tr>
+        </table>
+
     </div>
 </template>
 <style>
-    body {
-        background-color: #ff0000;
-    }
+
 </style>
 <script>
-    import HeaderComponent from './components/header.vue'
-    import OtherComponent from './components/other.vue'
+    var TagList = [];
+    var BookList = [];
     export default{
+
         data: function () {
+            this.$http.get('http://localhost/doubanserver/')
+                    .then(function (response) {
+                        response.data.forEach(function (e) {
+                            TagList.push(e);
+                        })
+                    });
             return {
-                msg: 'hello vue'
+                TagList: TagList,
+                BookList: BookList
             }
         },
-        components: {
-            'other-component': OtherComponent,
-            HeaderComponent,
+        mounted:function(){
+            this.getBookListWithTagId(1);
+        },
+        methods: {
+            getBookListWithTagId: function (id) {
+                this.$http.get('http://localhost/doubanserver/index.php/Home/Index/getListWithTagId?id=' + id)
+                    .then(function (response) {
+                        BookList.splice(0,40);
+                        console.log(BookList);
+                        response.data.forEach(function (e) {
+                            BookList.push(e);
+                        });
+                    });
+            }
         }
     }
 </script>
