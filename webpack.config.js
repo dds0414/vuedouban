@@ -23,9 +23,17 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
+                test: /\.css$/,
+                loader: 'style!css'
+            },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2)$/,
+                loader: 'file'
+            },
+            {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file',
-                options: {
+                query: {
                     name: '[name].[ext]?[hash]'
                 }
             }

@@ -1,5 +1,7 @@
 <template>
+
     <div>
+        <el-button @click.native="startHacking">Let's do it</el-button>
         <div v-for="item in TagList" style="float: left;margin-right: 15px">
             <span @click="getBookListWithTagId(item.id)">{{ item.tag_name }}</span>
         </div>
@@ -46,6 +48,13 @@
                             BookList.push(e);
                         });
                     });
+            },
+            startHacking: function() {
+                this.$notify({
+                    title: 'It Works',
+                    message: 'We have laid the groundwork for you. Now it\'s your time to build something epic!',
+                    duration: 6000
+                })
             }
         }
     }
